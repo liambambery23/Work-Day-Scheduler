@@ -1,17 +1,5 @@
 $(document).ready(function () {
 
-// let workDay = {
-//     "8 AM": "",
-//     "9 AM": "",
-//     "10 AM": "",
-//     "11 AM": "",
-//     "12 PM": "",
-//     "1 PM": "",
-//     "2 PM": "",
-//     "3 PM": "",
-//     "4 PM" : "",
-//     "5 PM": "",
-// };
 
 //set current date and time to top of page
 $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm:ss a"));
@@ -30,7 +18,7 @@ $("#row10 .entry").val(localStorage.getItem("row10"));
 
 //when save button is clicked, set content of text area to local storage
 
-$("button").click(function() {
+$(".saveBtn").click(function() {
     console.log(this);
     let text = $(this).siblings("textarea").val();
     let hourString = $(this).parent().attr("id");
@@ -38,30 +26,34 @@ $("button").click(function() {
     localStorage.setItem(hourString, text);
   });
 
+  // clears previous saved data from local storage and reloads the page
+$("#clear").click(function () {
+    localStorage.clear();
+    location.reload();
+});
+
   // function to check current time and apply proper styling to the rows 
   function trackTime() {
       
       let currentHour = moment().hour();
-
       
-
-
-      $(".calendar-row").each(function () {
-          let timeSlot = parseInt($(".entry").attr("data-time"));
-          console.log(timeSlot);
+      $(".entry").each(function () {
+          let timeSlot = parseInt($(this).attr("data-time"));
+          console.log(this);
+          console.log(timeSlot, currentHour);
 
           if (timeSlot < currentHour) {
-            $(".entry").addClass("past");
-            $(".entry").removeClass("future");
-            $(".entry").removeClass("present");
+            $(this).addClass("past");
+            $(this).removeClass("future");
+            $(this).removeClass("present");
           } else if (timeSlot === currentHour) {
-            $(".entry").removeClass("past");
-            $(".entry").addClass("present");
-            $(".entry").removeClass("future");
+            $(this).removeClass("past");
+            $(this).addClass("present");
+            $(this).removeClass("future");
           } else {
-            $(".entry").removeClass("present");
-            $(".entry").removeClass("past");
-            $(".entry").addClass("future");
+            $(this).removeClass("present");
+            $(this).removeClass("past");
+            $(this).addClass("future");
           }
           
 
